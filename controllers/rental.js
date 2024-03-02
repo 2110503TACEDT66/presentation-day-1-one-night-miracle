@@ -58,16 +58,16 @@ exports.getRental=async(req,res,next)=>{
 };
 
 //@Desc Add rental
-//@route POST /api/v1/hospitals/:hospitalId/rental
+//@route POST /api/v1/cars/:carId/rental
 //@access Private
 exports.createRental=async (req,res,next)=>{
     try{
-        req.body.car=req.params.carid;
+        req.body.car=req.params.carId;
 
-        const car=await Cars.findById(req.params.carid);
+        const car=await Cars.findById(req.params.carId);
     
     if(!car){
-        return res.status(400).json({success:false,messege:`No car with the id of ${req.params.carid}`});
+        return res.status(400).json({success:false,messege:`No car with the id of ${req.params.carId}`});
     }
 
     

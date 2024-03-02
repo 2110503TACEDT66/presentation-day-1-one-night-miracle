@@ -1,4 +1,4 @@
-const { Int32 } = require('mongodb');
+
 const mongoose = require('mongoose');
 
 const CarSchema = new mongoose.Schema({
@@ -10,12 +10,13 @@ const CarSchema = new mongoose.Schema({
         maxlength:[50, 'carid can not be more than 50 characters']
     },
     pricerate: {
-        type: Number,
+        type: String,
         required: [true,'Please add a pricerate']
     },
     status: {
         type: String,
-        default: "available"
+        default: "available",
+        required: [true,'Please add a status']
     },
     model: {
         type: String,
@@ -23,10 +24,10 @@ const CarSchema = new mongoose.Schema({
     },
     cartype: {
             type: String,
-            required: [true,'Please add a postalcode']        
+            required: [true,'Please add a cartype']        
     },
     numberofseat: {
-        type: Number,
+        type: String,
         required: [true, 'Please add a number of seat']
     },
     gearsystem: {
@@ -38,6 +39,14 @@ const CarSchema = new mongoose.Schema({
     toObject:{virtuals:true}
    });
 
+
+//Cascade delete rentals when a car is deleted
+    CarSchema.pre('deleteOne',{document:true,query:false},async function(next){
+    console.log(`Rental being removed from car ${this._id}`);
+    await mongoose.model('Rental').deleteMany({car:this._id});
+    next();
+});
+
    //reverse populate with virtuals
    CarSchema.virtual('rentals',{
     ref:'Rental',
@@ -45,11 +54,5 @@ const CarSchema = new mongoose.Schema({
     foreignField:'car',
     justOne:false
    });
-//Cascade delete appointments when a hospital is deleted
-    CarSchema.pre('deleteOne',{document:true,query:false},async function(next){
-    console.log(`Rental being removed from car ${this._id}`);
-    await this.model(`Appointment`).deleteMany({car:this._id});
-    next();
-})
 
 module.exports = mongoose.model('Car', CarSchema);
