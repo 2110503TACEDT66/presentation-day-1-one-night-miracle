@@ -93,7 +93,7 @@ if(!car){
 //@access Private
 exports.createCars=async(req,res,next)=>{
     const car =await Cars.create(req.body);
-    res.status(201).json({success:true,data:cars});
+    res.status(201).json({success:true,data:car});
 };
 
 //@desc Update single car
