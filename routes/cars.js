@@ -8,9 +8,10 @@ const router =express.Router();  //สร้างมาจาก express
 const {protect,authorize}=require('../middleware/auth');
 
 
+
 //Re-route into other resource routers
 router.use('/:carId/rental/',rentalRouter);
 
-router.route('/').get(getHospitals).post(protect,authorize('admin'),createHospitals);
-router.route('/:id').get(getHospital).put(protect,authorize('admin'),updateHospital).delete(protect,authorize('admin'),deleteHospital);    
+router.route('/').get(getCars).post(protect,authorize('admin'),createCars);
+router.route('/:id').get(getCar).put(protect,authorize('admin'),updateCar).delete(protect,authorize('admin'),deleteCar);    
 module.exports=router; //export routerให้ไฟล์อื่นรุ้จัก    

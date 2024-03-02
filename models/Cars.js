@@ -10,7 +10,7 @@ const CarSchema = new mongoose.Schema({
         maxlength:[50, 'carid can not be more than 50 characters']
     },
     pricerate: {
-        type: Int32,
+        type: Number,
         required: [true,'Please add a pricerate']
     },
     status: {
@@ -26,7 +26,7 @@ const CarSchema = new mongoose.Schema({
             required: [true,'Please add a postalcode']        
     },
     numberofseat: {
-        type: Int32,
+        type: Number,
         required: [true, 'Please add a number of seat']
     },
     gearsystem: {
