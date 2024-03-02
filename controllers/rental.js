@@ -96,7 +96,7 @@ exports.addRental=async (req,res,next)=>{
 //@Desc Update rental
 //@route PUT /api/v1/rental/:id
 //@access Private
-exports.updateAppointment=async (req,res,next)=>{
+exports.updateRental=async (req,res,next)=>{
 try{
     let rental = await Rental.findById(req.params.id);
     

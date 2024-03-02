@@ -1,15 +1,15 @@
 const express=require('express');
-const {getAppointments,getAppointment,addAppointment,updateAppointment,deleteAppointment}=require('../controllers/appointments');
+const {getRentals,getRental,addRental,updateRental,deleteRental}=require('../controllers/rentals');
 
 const router =express.Router({mergeParams:true});
 
 const {protect,authorize}=require('../middleware/auth');
 
 router.route('/')
-.get(protect,getAppointments)
-.post(protect,authorize('admin','user'),addAppointment);
+.get(protect,getRentals)
+.post(protect,authorize('admin','user'),addRental);
 router.route('/:id')
-.get(protect,getAppointment)
-.put(protect,authorize('admin','user'),updateAppointment)
-.delete(protect,authorize('admin','user'),deleteAppointment);
+.get(protect,getRental)
+.put(protect,authorize('admin','user'),updateRental)
+.delete(protect,authorize('admin','user'),deleteRental);
 module.exports=router;
