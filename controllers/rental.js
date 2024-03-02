@@ -1,7 +1,7 @@
 const Rental =require('../models/Rental');
 const Cars =require('../models/Cars');
-//@desc Get all appointments
-//@route GET /api/v1/appointments
+//@desc Get all rentals
+//@route GET /api/v1/rentals
 //@access public
 exports.getRentals=async(req,res,next)=>{
     let query;
@@ -9,51 +9,51 @@ exports.getRentals=async(req,res,next)=>{
     if(req.user.role !== 'admin'){
         query=Rental.find({user:req.user.id}).populate({
             path:'car',
-            select:'name province tel'
+            select:'carid model pricerate status'
         });
     }else {//If you are an admin , you can see all!
         if(req.params.carId){
             console.log(req.params.carId);
             query=Rental.find({car:req.params.carId}).populate({
                 path:"car",
-                select:"name province tel"
+                select:"carid model pricerate status"
             });
         }else query =await Rental.find().populate({
             path:'car',
-            select:'name province tel'
+            select:'carid model pricerate status'
         });
     }
     try{
-        const appointments=await query;
+        const rentals=await query;
         res.status(200).json({
             success:true,
-            count:appointments.length,
-            data:appointments
+            count:rentals.length,
+            data:rentals
         });
     }catch(error){
         console.log(error);
         return res.status(500).json({
-            success:false,message:"Cannot find Appointment"
+            success:false,message:"Cannot find Rental"
         });
     }
 };
-//@desc Get single appointments
-//@route GET /api/v1/appointments/:id
+//@desc Get single rental
+//@route GET /api/v1/rentals/:id
 //@access Public
-exports.getAppointment=async(req,res,next)=>{
+exports.getRental=async(req,res,next)=>{
     try{
-        const appointment=await Appointment.findById(req.params.id).populate({
-            path:'hospital',
-            select:'name description tel'
+        const rental=await Rental.findById(req.params.id).populate({
+            path:'car',
+            select:'carid model pricerate status'
         });
 
-        if(!appointment){
-            return res.status(400).json({success:false,messege:`No appointment with the id of ${req.params.id}`});
+        if(!rental){
+            return res.status(400).json({success:false,messege:`No rental with the id of ${req.params.id}`});
         }
-        res.status(200).json({success:true,data:appointment});
+        res.status(200).json({success:true,data:rental});
     }catch(error){
        console.log(error);
-       return res.status(500).json({success:false,messege:'Cannot find Appointment'});
+       return res.status(500).json({success:false,messege:'Cannot find Rental'});
     }
 };
 

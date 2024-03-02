@@ -15,7 +15,7 @@ const CarSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        required: [true,'Please add a status']
+        default: "available"
     },
     model: {
         type: String,
