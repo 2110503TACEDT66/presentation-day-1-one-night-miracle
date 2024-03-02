@@ -1,26 +1,25 @@
-const Appointment =require('../models/Appointment');
-const Hospital =require('../models/Hospital');
-//@desc Get all appointments
-//@route GET /api/v1/appointments
+const Rental =require('../models/Rental');
+const Car =require('../models/Car');
+//@desc Get all rentals
+//@route GET /api/v1/rentals
 //@access public
-exports.getAppointments=async(req,res,next)=>{
+exports.getRentals=async(req,res,next)=>{
     let query;
-    //General users can see only their appointments!
+    //General users can see only their rentals!
     if(req.user.role !== 'admin'){
-        query=Appointment.find({user:req.user.id}).populate({
-            path:'hospital',
+        query=Rental.find({user:req.user.id}).populate({
+            path:'car',
             select:'name province tel'
         });
     }else {//If you are an admin , you can see all!
-        if(req.params.hospitalId){
-            console.log(req.params.hospitalId);
-            query=Appointment.find({hospital:req.params.hospitalID
-            }).populate({
-                path:"hospital",
+        if(req.params.carId){
+            console.log(req.params.carId);
+            query=Rental.find({car:req.params.carId}).populate({
+                path:"car",
                 select:"name province tel"
             });
-        }else query =await Appointment.find().populate({
-            path:'hospital',
+        }else query =await Rental.find().populate({
+            path:'car',
             select:'name province tel'
         });
     }
