@@ -1,8 +1,8 @@
-const Hospital = require('../models/Hospital');
+const Cars = require('../models/Cars');
 //@desc GET all cars
 //@route GET /api/v1/cars
 //@access Public
-exports.getHospitals=async(req,res,next)=>{
+exports.getCars=async(req,res,next)=>{
     
     let query;
 
@@ -43,11 +43,11 @@ exports.getHospitals=async(req,res,next)=>{
    const endIndex =page*limit;
    
     try{
-        const total =await Hospital.countDocuments();
+        const total =await Cars.countDocuments();
         query=query.skip(startIndex).limit(limit);
         //Execute query
 
-        const hospitals=await query;
+        const cars = await query;
        
        //Pagination result
        const pagination={};
@@ -65,7 +65,7 @@ exports.getHospitals=async(req,res,next)=>{
 
 
     //console.log(req.query);
-    res.status(200).json({success:true,count:hospitals.length, data:hospitals});
+    res.status(200).json({success:true,count:cars.length, data:cars});
 }catch(err){
     
     res.status(400).json({success:false});
