@@ -1,15 +1,15 @@
 const express = require('express');
-const {getHospitals,getHospital,createHospitals,updateHospital,deleteHospital} = require('../controllers/hospitals');
+const {getCars,getCar,createCars,updateCar,deleteCar} = require('../controllers/cars');
 
 //Include other routers
-const appointmentsRouter=require('./appointments');
+const rentalRouter=require('./rental');
 const router =express.Router();  //สร้างมาจาก express
 
 const {protect,authorize}=require('../middleware/auth');
 
 
 //Re-route into other resource routers
-router.use('/:hospitalId/appointments/',appointmentsRouter);
+router.use('/:carId/rental/',rentalRouter);
 
 router.route('/').get(getHospitals).post(protect,authorize('admin'),createHospitals);
 router.route('/:id').get(getHospital).put(protect,authorize('admin'),updateHospital).delete(protect,authorize('admin'),deleteHospital);    
