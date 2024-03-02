@@ -57,8 +57,8 @@ exports.getRental=async(req,res,next)=>{
     }
 };
 
-//@Desc Add appointment
-//@route POST /api/v1/hospitals/:hospitalId/appointment
+//@Desc Add rental
+//@route POST /api/v1/hospitals/:hospitalId/rental
 //@access Private
 exports.addRental=async (req,res,next)=>{
     try{
@@ -74,12 +74,12 @@ exports.addRental=async (req,res,next)=>{
     //add user Id to req.body
     req.body.user=req.user.id;
     
-    //Check for existed appointment
+    //Check for existed rental
     const existedRental = await Rental.find({user:req.user.id});
 
     //if the user is not an admin, they can only create 3 rental.
     if(existedRental.length >= 3 && req.user.role !== 'admin'){
-        return res.status(400).json({success:false,message:`Ther user with ID ${req.user.id}has already made 3 appointments`});
+        return res.status(400).json({success:false,message:`Ther user with ID ${req.user.id}has already made 3 rental`});
     }
     
     const rental= await Rental.create(req.body);
