@@ -1,37 +1,37 @@
+const { Int32 } = require('mongodb');
 const mongoose = require('mongoose');
 
-const HospitalSchema = new mongoose.Schema({
-    name: {
+const CarSchema = new mongoose.Schema({
+    carid: {
         type: String,
-        required: [true,'Please add a name'],
+        required: [true,'Please add a carid'],
         unique: true,
         trim: true,
-        maxlength:[50, 'Name can not be more than 50 characters']
+        maxlength:[50, 'carid can not be more than 50 characters']
     },
-    address: {
+    pricerate: {
+        type: Int32,
+        required: [true,'Please add a pricerate']
+    },
+    status: {
         type: String,
-        required: [true,'Please add an address']
+        required: [true,'Please add a status']
     },
-    district: {
+    model: {
         type: String,
-        required: [true,'Please add a district']
+        required: [true,'Please add a model']
     },
-    province: {
-        type: String,
-        required: [true,'Please add a province']
-    },
-    postalcode: {
+    cartype: {
             type: String,
-            required: [true,'Please add a postalcode'],
-            maxlength: [5,'Postal Code can not be more than 5 digits']
-        
+            required: [true,'Please add a postalcode']        
     },
-    tel: {
-        type: String
+    numberofseat: {
+        type: Int32,
+        required: [true, 'Please add a number of seat']
     },
-    region: {
+    gearsystem: {
         type: String,
-        required: [true,'Please add a region'],
+        required: [true,'Please add a gearsystem'],
     }
    }, {
     toJSON:{virtuals:true},
@@ -39,17 +39,17 @@ const HospitalSchema = new mongoose.Schema({
    });
 
    //reverse populate with virtuals
-   HospitalSchema.virtual('appointments',{
-    ref:'Appointment',
+   CarSchema.virtual('rentals',{
+    ref:'Rental',
     localField:'_id',
-    foreignField:'hospital',
+    foreignField:'car',
     justOne:false
    });
 //Cascade delete appointments when a hospital is deleted
-HospitalSchema.pre('deleteOne',{document:true,query:false},async function(next){
-    console.log(`Appointments being removed from hospital ${this._id}`);
-    await this.model(`Appointment`).deleteMany({hospital:this._id});
+    CarSchema.pre('deleteOne',{document:true,query:false},async function(next){
+    console.log(`Rental being removed from car ${this._id}`);
+    await this.model(`Appointment`).deleteMany({car:this._id});
     next();
 })
 
-module.exports = mongoose.model('Hospital', HospitalSchema);
+module.exports = mongoose.model('Car', CarSchema);
