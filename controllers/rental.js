@@ -115,7 +115,7 @@ try{
     });
     res.status(200).json({
         success:true,
-        data:appointment
+        data:rental
     });
 }catch(error){
     console.log(error);
@@ -135,7 +135,7 @@ exports.deleteRental=async (req,res,next)=>{
         }
      //Make sure user is the rental owner
      if(rental.user.toString()!==req.user.id && req.user.role !== 'admin'){
-        return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to delete this bootcamp`});
+        return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to delete this rental`});
     }
 
         await rental.deleteOne();

@@ -109,7 +109,7 @@ exports.updateCar=async(req,res,next)=>{
         if(!car){
             return res.status(400).json({success:false});
         }
-     res.status(200).json({success:true, data: hospital });
+     res.status(200).json({success:true, data: car });
     }catch(err){
         res.status(400).json({success:false});
     }  
