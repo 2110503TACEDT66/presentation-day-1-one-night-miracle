@@ -146,6 +146,10 @@ exports.deleteRental=async (req,res,next)=>{
     }
 
         await rental.deleteOne();
+        await Cars.findByIdAndUpdate(rental.car._id,{status: "available"},{
+            new:true,
+            runValidators:true
+        });
     
         res.status(200).json({
             success:true,
