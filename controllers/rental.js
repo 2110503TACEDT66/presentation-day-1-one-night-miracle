@@ -93,23 +93,23 @@ exports.addRental=async (req,res,next)=>{
 }};
 
 
-//@Desc Update appointment
-//@route PUT /api/v1/appointment/:id
+//@Desc Update rental
+//@route PUT /api/v1/rental/:id
 //@access Private
 exports.updateAppointment=async (req,res,next)=>{
 try{
-    let appointment = await Appointment.findById(req.params.id);
+    let rental = await Rental.findById(req.params.id);
     
-    if(!appointment){
-        return res.status(404).json({success:false,messege:`No appointment with the id of ${req.params.id}`});
+    if(!rental){
+        return res.status(404).json({success:false,messege:`No rental with the id of ${req.params.id}`});
     }
 
-    //Make sure user is the appointment owner
-    if(appointment.user.toString()!==req.user.id && req.user.role !== 'admin'){
-        return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to update this appointment`});
+    //Make sure user is the rental owner
+    if(rental.user.toString()!==req.user.id && req.user.role !== 'admin'){
+        return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to update this rental`});
     }
 
-    appointment=await Appointment.findByIdAndUpdate(req.params.id,req.body,{
+    rental=await Rental.findByIdAndUpdate(req.params.id,req.body,{
         new:true,
         runValidators:true
     });
@@ -119,26 +119,26 @@ try{
     });
 }catch(error){
     console.log(error);
-    return res.status(500).json({success:false,messege:"Cannot update Appointment"});
+    return res.status(500).json({success:false,messege:"Cannot Update Rental"});
 }
 };
 
-//@Desc Delete appointment
-//@route DELETE /api/v1/appointment/:id
+//@Desc Delete rental
+//@route DELETE /api/v1/rental/:id
 //@access Private
-exports.deleteAppointment=async (req,res,next)=>{
+exports.deleteRental=async (req,res,next)=>{
     try{
-        const appointment = await Appointment.findById(req.params.id);
+        const rental = await Rental.findById(req.params.id);
         
-        if(!appointment){
-            return res.status(404).json({success:false,messege:`No appointment with the id of ${req.params.id}`});
+        if(!rental){
+            return res.status(404).json({success:false,messege:`No rental with the id of ${req.params.id}`});
         }
-     //Make sure user is the appointment owner
-     if(appointment.user.toString()!==req.user.id && req.user.role !== 'admin'){
+     //Make sure user is the rental owner
+     if(rental.user.toString()!==req.user.id && req.user.role !== 'admin'){
         return res.status(401).json({success:false,message:`User ${req.user.id} is not authorized to delete this bootcamp`});
     }
 
-        await appointment.deleteOne();
+        await rental.deleteOne();
     
         res.status(200).json({
             success:true,
@@ -146,6 +146,6 @@ exports.deleteAppointment=async (req,res,next)=>{
         });
     }catch(error){
         console.log(error);
-        return res.status(500).json({success:false,messege:"Cannot update Appointment"});
+        return res.status(500).json({success:false,messege:"Cannot Delete Rental"});
     }
     };
