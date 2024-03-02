@@ -1,5 +1,5 @@
-const Appointment =require('../models/Rental');
-const Hospital =require('../models/Cars');
+const Rental =require('../models/Rental');
+const Cars =require('../models/Cars');
 //@desc Get all appointments
 //@route GET /api/v1/appointments
 //@access public
