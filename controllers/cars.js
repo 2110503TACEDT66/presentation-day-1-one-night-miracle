@@ -1,8 +1,8 @@
-const Hospital = require('../models/Hospital');
+const Cars = require('../models/Cars');
 //@desc GET all cars
 //@route GET /api/v1/cars
 //@access Public
-exports.getHospitals=async(req,res,next)=>{
+exports.getCars=async(req,res,next)=>{
     
     let query;
 
@@ -43,11 +43,11 @@ exports.getHospitals=async(req,res,next)=>{
    const endIndex =page*limit;
    
     try{
-        const total =await Hospital.countDocuments();
+        const total =await Cars.countDocuments();
         query=query.skip(startIndex).limit(limit);
         //Execute query
 
-        const hospitals=await query;
+        const cars = await query;
        
        //Pagination result
        const pagination={};
@@ -65,7 +65,7 @@ exports.getHospitals=async(req,res,next)=>{
 
 
     //console.log(req.query);
-    res.status(200).json({success:true,count:hospitals.length, data:hospitals});
+    res.status(200).json({success:true,count:cars.length, data:cars});
 }catch(err){
     
     res.status(400).json({success:false});
@@ -99,14 +99,14 @@ exports.createCars=async(req,res,next)=>{
 //@desc Update single car
 //@route PUT /api/v1/cars/:id
 //@access Private
-exports.updateHospital=async(req,res,next)=>{
+exports.updateCar=async(req,res,next)=>{
     try{
-        const hospital = await Hospital.findByIdAndUpdate(req.params.id,req.body,{
+        const car = await Cars.findByIdAndUpdate(req.params.id,req.body,{
             new:true,
             runValidators:true
         });
 
-        if(!hospital){
+        if(!car){
             return res.status(400).json({success:false});
         }
      res.status(200).json({success:true, data: hospital });
@@ -118,14 +118,14 @@ exports.updateHospital=async(req,res,next)=>{
 //@desc Delete single car
 //@route DELETE /api/v1/cars/:id
 //@access Private
-exports.deleteHospital=async(req,res,next)=>{
+exports.deleteCar=async(req,res,next)=>{
     try{
-        const hospital= await Hospital.findById(req.params.id);
+        const car= await Cars.findById(req.params.id);
 
-        if(!hospital)
+        if(!car)
          res.status(400).json({success:false});
         
-        await hospital.deleteOne();
+        await car.deleteOne();
 
     res.status(200).json({success:true,data: {}});
 }catch(err){
