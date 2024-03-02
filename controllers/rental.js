@@ -9,18 +9,18 @@ exports.getRentals=async(req,res,next)=>{
     if(req.user.role !== 'admin'){
         query=Rental.find({user:req.user.id}).populate({
             path:'car',
-            select:'carid model pricerate status'
+            select:'carid model pricerate'
         });
     }else {//If you are an admin , you can see all!
         if(req.params.carId){
             console.log(req.params.carId);
             query=Rental.find({car:req.params.carId}).populate({
                 path:"car",
-                select:"carid model pricerate status"
+                select:"carid model pricerate"
             });
         }else query =await Rental.find().populate({
             path:'car',
-            select:'carid model pricerate status'
+            select:'carid model pricerate'
         });
     }
     try{
@@ -44,7 +44,7 @@ exports.getRental=async(req,res,next)=>{
     try{
         const rental=await Rental.findById(req.params.id).populate({
             path:'car',
-            select:'carid model pricerate status'
+            select:'carid model pricerate'
         });
 
         if(!rental){
