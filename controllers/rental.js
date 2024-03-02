@@ -62,12 +62,12 @@ exports.getRental=async(req,res,next)=>{
 //@access Private
 exports.addAppointment=async (req,res,next)=>{
     try{
-        req.body.hospital=req.params.hospitalId;
+        req.body.car=req.params.carid;
 
-        const hospital=await Hospital.findById(req.params.hospitalId);
+        const car=await Cars.findById(req.params.carid);
     
-    if(!hospital){
-        return res.status(400).json({success:false,messege:`No hospital with the id of ${req.params.hospitalId}`});
+    if(!car){
+        return res.status(400).json({success:false,messege:`No car with the id of ${req.params.carid}`});
     }
 
     
@@ -75,21 +75,21 @@ exports.addAppointment=async (req,res,next)=>{
     req.body.user=req.user.id;
     
     //Check for existed appointment
-    const existedAppointments = await Appointment.find({user:req.user.id});
+    const existedRental = await Rental.find({user:req.user.id});
 
-    //if the user is not an admin, they can only create 3 appointment.
-    if(existedAppointments.length >= 3 && req.user.role !== 'admin'){
+    //if the user is not an admin, they can only create 3 rental.
+    if(existedRental.length >= 3 && req.user.role !== 'admin'){
         return res.status(400).json({success:false,message:`Ther user with ID ${req.user.id}has already made 3 appointments`});
     }
     
-    const appointment= await Appointment.create(req.body);
+    const rental= await Rental.create(req.body);
          res.status(200).json({
             success:true,
-            data:appointment
+            data:rental
          });
 }catch(error){
     console.log(error);
-    return res.status(500).json({success:false,message:"Cannot create Appointment"});
+    return res.status(500).json({success:false,message:"Cannot create Rental"});
 }};
 
 
