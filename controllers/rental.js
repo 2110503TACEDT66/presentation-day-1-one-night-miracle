@@ -60,7 +60,7 @@ exports.getRental=async(req,res,next)=>{
 //@Desc Add appointment
 //@route POST /api/v1/hospitals/:hospitalId/appointment
 //@access Private
-exports.addAppointment=async (req,res,next)=>{
+exports.addRental=async (req,res,next)=>{
     try{
         req.body.car=req.params.carid;
 
