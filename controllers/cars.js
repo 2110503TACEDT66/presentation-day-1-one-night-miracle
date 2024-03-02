@@ -75,14 +75,14 @@ exports.getHospitals=async(req,res,next)=>{
 //@desc GET single car
 //@route GET /api/v1/cars
 //@access Public
-exports.getHospital=async(req,res,next)=>{
+exports.getCar=async(req,res,next)=>{
     try{
-        const hospital= await Hospital.findById(req.params.id);
-if(!hospital){
+        const car= await Cars.findById(req.params.id);
+if(!car){
     return res.status(400).json({success:false});
 }
     
-    res.status(200).json({success:true,data:hospital});
+    res.status(200).json({success:true,data:car});
 }catch(err){
     res.status(400).json({success:false});
 }
@@ -91,9 +91,9 @@ if(!hospital){
 //@desc Create  car
 //@route POST /api/v1/cars
 //@access Private
-exports.createHospitals=async(req,res,next)=>{
-    const hospital =await Hospital.create(req.body);
-    res.status(201).json({success:true,data:hospital});
+exports.createCars=async(req,res,next)=>{
+    const car =await Cars.create(req.body);
+    res.status(201).json({success:true,data:cars});
 };
 
 //@desc Update single car
