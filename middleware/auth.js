@@ -21,7 +21,7 @@ if(!token){
 
     next();
  }catch(err){
-    console.log(err,stack);
+    console.log(err.stack);
     return res.status(401).json({success:false,messege:'Not authorization to access to this route'});
  }   
 };
