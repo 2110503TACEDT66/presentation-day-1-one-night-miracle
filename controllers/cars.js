@@ -1,3 +1,4 @@
+const Cars = require('../models/Cars');
 const Hospital = require('../models/Hospital');
 //@desc GET all cars
 //@route GET /api/v1/cars
@@ -99,14 +100,14 @@ exports.createHospitals=async(req,res,next)=>{
 //@desc Update single car
 //@route PUT /api/v1/cars/:id
 //@access Private
-exports.updateHospital=async(req,res,next)=>{
+exports.updateCar=async(req,res,next)=>{
     try{
-        const hospital = await Hospital.findByIdAndUpdate(req.params.id,req.body,{
+        const car = await Cars.findByIdAndUpdate(req.params.id,req.body,{
             new:true,
             runValidators:true
         });
 
-        if(!hospital){
+        if(!car){
             return res.status(400).json({success:false});
         }
      res.status(200).json({success:true, data: hospital });
@@ -118,14 +119,14 @@ exports.updateHospital=async(req,res,next)=>{
 //@desc Delete single car
 //@route DELETE /api/v1/cars/:id
 //@access Private
-exports.deleteHospital=async(req,res,next)=>{
+exports.deleteCar=async(req,res,next)=>{
     try{
-        const hospital= await Hospital.findById(req.params.id);
+        const car= await Cars.findById(req.params.id);
 
-        if(!hospital)
+        if(!car)
          res.status(400).json({success:false});
         
-        await hospital.deleteOne();
+        await car.deleteOne();
 
     res.status(200).json({success:true,data: {}});
 }catch(err){
