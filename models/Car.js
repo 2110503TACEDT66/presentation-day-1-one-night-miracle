@@ -39,14 +39,14 @@ const CarSchema = new mongoose.Schema({
    });
 
    //reverse populate with virtuals
-   HospitalSchema.virtual('rentals',{
+   CarSchema.virtual('rentals',{
     ref:'Rental',
     localField:'_id',
     foreignField:'car',
     justOne:false
    });
 //Cascade delete appointments when a hospital is deleted
-HospitalSchema.pre('deleteOne',{document:true,query:false},async function(next){
+    CarSchema.pre('deleteOne',{document:true,query:false},async function(next){
     console.log(`Rental being removed from car ${this._id}`);
     await this.model(`Appointment`).deleteMany({car:this._id});
     next();
