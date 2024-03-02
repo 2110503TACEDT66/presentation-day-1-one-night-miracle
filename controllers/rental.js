@@ -65,10 +65,13 @@ exports.createRental=async (req,res,next)=>{
         req.body.car=req.params.carId;
 
         const car=await Cars.findById(req.params.carId);
+        const available = car.status;
     
     if(!car){
         return res.status(400).json({success:false,messege:`No car with the id of ${req.params.carId}`});
     }
+    if(available=="unavailable")
+        return res.status(400).json({success:false, message:'This car is currently unavailable'});
 
     
     //add user Id to req.body
@@ -83,6 +86,10 @@ exports.createRental=async (req,res,next)=>{
     }
     
     const rental= await Rental.create(req.body);
+    await Cars.findByIdAndUpdate(req.params.carId,{status: "unavailable"},{
+        new:true,
+        runValidators:true
+    });
          res.status(200).json({
             success:true,
             data:rental
