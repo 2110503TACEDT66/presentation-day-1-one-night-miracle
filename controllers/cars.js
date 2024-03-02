@@ -1,6 +1,6 @@
 const Hospital = require('../models/Hospital');
-//@desc GET all hospitals
-//@route GET /api/v1/hospitals
+//@desc GET all cars
+//@route GET /api/v1/cars
 //@access Public
 exports.getHospitals=async(req,res,next)=>{
     
@@ -72,8 +72,8 @@ exports.getHospitals=async(req,res,next)=>{
 }
 };
 
-//@desc GET single hospital
-//@route GET /api/v1/hospitals
+//@desc GET single car
+//@route GET /api/v1/cars
 //@access Public
 exports.getHospital=async(req,res,next)=>{
     try{
@@ -88,16 +88,16 @@ if(!hospital){
 }
 };
 
-//@desc Create  hospital
-//@route POST /api/v1/hospitals
+//@desc Create  car
+//@route POST /api/v1/cars
 //@access Private
 exports.createHospitals=async(req,res,next)=>{
     const hospital =await Hospital.create(req.body);
     res.status(201).json({success:true,data:hospital});
 };
 
-//@desc Update single hospital
-//@route PUT /api/v1/hospitals/:id
+//@desc Update single car
+//@route PUT /api/v1/cars/:id
 //@access Private
 exports.updateHospital=async(req,res,next)=>{
     try{
@@ -115,8 +115,8 @@ exports.updateHospital=async(req,res,next)=>{
     }  
 };
 
-//@desc Delete single hospital
-//@route DELETE /api/v1/hospitals/:id
+//@desc Delete single car
+//@route DELETE /api/v1/cars/:id
 //@access Private
 exports.deleteHospital=async(req,res,next)=>{
     try{

@@ -1,7 +1,7 @@
-const Rental =require('../models/Rental');
-const Car =require('../models/Car');
-//@desc Get all rentals
-//@route GET /api/v1/rentals
+const Appointment =require('../models/Rental');
+const Hospital =require('../models/Cars');
+//@desc Get all appointments
+//@route GET /api/v1/appointments
 //@access public
 exports.getRentals=async(req,res,next)=>{
     let query;
