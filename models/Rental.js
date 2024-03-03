@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 
-const RentalSchema=new mongoose.Schema({
+const RentalSchema=new mongoose.Schema({//เพิ่มตัวแปร isPaid เป็น true or false
 
     rentalDate:{
         type:Date,
@@ -15,6 +15,10 @@ const RentalSchema=new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref:'Car',
         required:true
+    },
+    isPaid:{
+        type: Boolean,
+        default: false
     },
     createdAt:{
         type:Date,

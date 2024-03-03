@@ -84,6 +84,24 @@ exports.getMe=async(req,res,next)=>{
     });
 };
 
+//@desc Add provided number to balance
+//@route PUT /api/v1/auth/balance
+//@access Private
+exports.addBalance=async(req,res,next)=>{
+    const balance = req.user.balance - 0;
+    const add = req.body.balance - 0;
+    const balanceAfter = balance+add;
+
+    const user = await User.findByIdAndUpdate(req.user.id,{balance: balanceAfter},{
+        new:true,
+        runValidators:true
+    });
+    res.status(200).json({
+        success:true,
+        data: user
+    });
+};
+
 //@desc - Logout user / clear token
 //@route - GET /api/v1/auth/logout
 //@access - Private

@@ -1,5 +1,7 @@
 const Rental =require('../models/Rental');
 const Cars =require('../models/Cars');
+const User = require('../models/User');
+const { default: mongoose } = require('mongoose');
 
 //@desc Get all rentals
 //@route GET /api/v1/rentals
@@ -85,10 +87,6 @@ exports.createRental=async (req,res,next)=>{
     }
     
     const rental= await Rental.create(req.body);
-    /*await Cars.findByIdAndUpdate(req.params.carId,{status: "unavailable"},{
-        new:true,
-        runValidators:true
-    });*/
          res.status(200).json({
             success:true,
             data:rental
@@ -145,10 +143,6 @@ exports.deleteRental=async (req,res,next)=>{
     }
 
         await rental.deleteOne();
-        /*await Cars.findByIdAndUpdate(rental.car._id,{status: "available"},{
-            new:true,
-            runValidators:true
-        });*/
     
         res.status(200).json({
             success:true,
@@ -157,5 +151,111 @@ exports.deleteRental=async (req,res,next)=>{
     }catch(error){
         console.log(error);
         return res.status(500).json({success:false,messege:"Cannot Delete Rental"});
+    }
+};
+
+//@Desc Pay all unpaid rentals at once
+//@route PUT /api/v1/rental/pay
+//@access Private
+exports.payRentals = async (req,res,next) => {
+    try{
+        const ObjectId = mongoose.Types.ObjectId;
+
+        const price = await Rental.aggregate([{
+            $match: {
+              user: new ObjectId(req.user.id),
+              isPaid: false
+            }
+          },
+          {
+            $lookup: {
+              from: "cars",
+              localField: "car",
+              foreignField: "_id",
+              as: "car"
+            }},
+            {$unwind: {
+             path: "$car"
+           }},
+           {$group: {
+             _id: "$user",
+             totalprice: {$sum: {$toInt: "$car.pricerate"}}
+            }}
+        ]);
+        const yourPrice = price[0].totalprice - 0;
+        const balance = req.user.balance - 0;
+        const balanceAfter = balance-yourPrice;
+
+        if(balanceAfter < 0) return res.status(400).json({success:false, message:"Your balance is not enough to pay all unpaid rentals"});
+        else {
+            await Rental.updateMany(
+                {user: new ObjectId(req.user.id), isPaid: false},
+                {
+                    $set: {isPaid: true}
+                }
+            )
+            await User.findByIdAndUpdate(req.user.id,{balance: balanceAfter},{
+                new:true,
+                runValidators:true
+            });
+        }
+        res.status(200).json({success:true, message:`Paid all unpaid rentals. Your current balance is ${balanceAfter}`});
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({success:false,messege:"Cannot Pay Unpaid Rentals / You don't have any unpaid rentals"});
+    }
+};
+
+//@Desc Pay one unpaid rental
+//@route PUT /api/v1/rental/pay/:id
+//@access Private
+exports.payRental = async (req,res,next) => {
+    try{
+        const ObjectId = mongoose.Types.ObjectId;
+
+        const rental = await Rental.findById(req.params.id);
+        if(rental.isPaid) return res.status(400).json({success:false,messege:"You've already paid this rental"});
+
+        const balance = req.user.balance - 0;
+        const price = await Rental.aggregate([{
+            $match: {
+              _id: new ObjectId(req.params.id),
+            }
+          },
+          {
+            $lookup: {
+              from: "cars",
+              localField: "car",
+              foreignField: "_id",
+              as: "car"
+            }},
+            {$unwind: {
+             path: "$car"
+           }},
+           {$group: {
+             _id: "$_id",
+             price: {$sum : {$toInt: "$car.pricerate"}}
+            }}
+        ]);
+        const thePrice = price[0].price - 0;
+        const balanceAfter = balance-thePrice;
+
+        if(balanceAfter < 0) return res.status(400).json({success:false, message:"Your balance is not enough to pay this rental"});
+        else {
+            await Rental.updateOne(
+                {_id: new ObjectId(req.params.id)},
+                {
+                    $set: {isPaid: true}
+                }
+            )
+            await User.findByIdAndUpdate(req.user.id,{balance: balanceAfter},{
+                new:true,
+                runValidators:true
+            });
+        }
+        res.status(200).json({success:true, message:`Paid this rental. Your current balance is ${balanceAfter}`});
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({success:false,messege:"Cannot Pay Unpaid Rentals"});
     }
 };
