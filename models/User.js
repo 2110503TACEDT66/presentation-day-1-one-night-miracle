@@ -26,6 +26,10 @@ const UserSchema=new mongoose.Schema({
         enum: ['user','admin'],
         default: 'user'
     },
+    balance: {
+        type:String,
+        default: '0'
+    },
     password: {
         type:String,
         required:[true,'Please add a password'],

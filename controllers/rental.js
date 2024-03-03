@@ -1,5 +1,6 @@
 const Rental =require('../models/Rental');
 const Cars =require('../models/Cars');
+
 //@desc Get all rentals
 //@route GET /api/v1/rentals
 //@access public
@@ -37,6 +38,7 @@ exports.getRentals=async(req,res,next)=>{
         });
     }
 };
+
 //@desc Get single rental
 //@route GET /api/v1/rentals/:id
 //@access Public
@@ -65,13 +67,10 @@ exports.createRental=async (req,res,next)=>{
         req.body.car=req.params.carId;
 
         const car=await Cars.findById(req.params.carId);
-        const available = car.status;
     
     if(!car){
         return res.status(400).json({success:false,messege:`No car with the id of ${req.params.carId}`});
     }
-    if(available=="unavailable")
-        return res.status(400).json({success:false, message:'This car is currently unavailable'});
 
     
     //add user Id to req.body
@@ -86,10 +85,10 @@ exports.createRental=async (req,res,next)=>{
     }
     
     const rental= await Rental.create(req.body);
-    await Cars.findByIdAndUpdate(req.params.carId,{status: "unavailable"},{
+    /*await Cars.findByIdAndUpdate(req.params.carId,{status: "unavailable"},{
         new:true,
         runValidators:true
-    });
+    });*/
          res.status(200).json({
             success:true,
             data:rental
@@ -146,10 +145,10 @@ exports.deleteRental=async (req,res,next)=>{
     }
 
         await rental.deleteOne();
-        await Cars.findByIdAndUpdate(rental.car._id,{status: "available"},{
+        /*await Cars.findByIdAndUpdate(rental.car._id,{status: "available"},{
             new:true,
             runValidators:true
-        });
+        });*/
     
         res.status(200).json({
             success:true,
@@ -159,4 +158,4 @@ exports.deleteRental=async (req,res,next)=>{
         console.log(error);
         return res.status(500).json({success:false,messege:"Cannot Delete Rental"});
     }
-    };
+};
