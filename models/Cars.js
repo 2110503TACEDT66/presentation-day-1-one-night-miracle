@@ -13,11 +13,6 @@ const CarSchema = new mongoose.Schema({
         type: String,
         required: [true,'Please add a pricerate']
     },
-    status: {
-        type: String,
-        default: "available",
-        required: [true,'Please add a status']
-    },
     model: {
         type: String,
         required: [true,'Please add a model']
