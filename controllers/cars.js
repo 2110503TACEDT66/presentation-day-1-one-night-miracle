@@ -77,7 +77,7 @@ const endIndex =page*limit;
 //@access Public
 exports.getCar=async(req,res,next)=>{
     try{
-        const car= await Cars.findById(req.params.id);
+        const car = await Cars.findById(req.params.id).populate('rentals');
 if(!car){
     return res.status(400).json({success:false});
 }
