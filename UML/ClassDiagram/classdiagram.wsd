@@ -1,0 +1,40 @@
+@startuml 
+class Rental {
+
+rentalDate: Date
+user: ObjectId
+car: ObjectId
+createdAt: Date
+isPaid: Boolean
++ getRentals()+ getRental()+ createRental()+ updateRental()+ deleteRental()+ payRental()+ payRentals()
+}
+
+class Cars {
+
+carid: String
+pricerate: String
+model: String
+cartype: String
+numberofseat: String
+gearsystystem: String
++ getCars()+ getCar()+ createCars()+ updateCar()+ deleteCar()
+}
+
+class User {
+
+name: String
+telephoneNumber: String
+email: String
+role: String
+password: String
+resetPasswordToken: String
+resetPasswordExpire: Date
+createAt: Date
+balance: String
++ register()+ login()+ getMe()+ logout()+ addBalance()
+}
+
+Rental "1" -- "1" Cars : belongs to
+Rental "1"-- "1" User : belongs to
+
+@enduml

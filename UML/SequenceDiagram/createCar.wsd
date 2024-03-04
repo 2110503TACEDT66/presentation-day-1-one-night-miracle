@@ -1,0 +1,23 @@
+@startuml Rental Car (POST)
+
+header Sameple SuperCarcare Sequence Diagram
+footer Page %page% of %lastpage%
+title "Rental Car (POST)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:cars" as routerCars
+participant "<<controllers>>\n:cars" as controllersCars
+participant "<<model>>\n:Car" as modelCars
+database "<<MongoDB>>\n:cars" as CarsDatabase
+
+client->server ++:req.post('/cars')
+server->routerCars ++:app.use('/cars',cars)
+routerCars -> controllersCars ++:createCar()
+controllersCars->modelCars ++:create(req.body)
+modelCars ->CarsDatabase ++: CarSchema
+CarsDatabase --> modelCars --: car
+controllersCars <-- modelCars --:car
+controllersCars->client --:response
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml Rental Cars (GET ALL)
+
+header Sameple SuperCarcare Sequence Diagram
+footer Page %page% of %lastpage%
+title "Rental Cars (GET)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:cars" as routerCars
+participant "<<controllers>>\n:cars" as controllersCars
+participant "<<model>>\n:Car" as modelCars
+database "<<MongoDB>>\n:cars" as CarsDatabase
+
+client->server ++:req.get('/cars')
+server->routerCars ++:app.use('/cars',cars)
+routerCars -> controllersCars ++:getCars()
+controllersCars->modelCars ++:get(req.body)
+modelCars ->CarsDatabase ++: CarSchema
+CarsDatabase --> modelCar --: car
+controllersCars <-- modelCars --:Car
+controllersCars->client --:response
+
+@enduml
