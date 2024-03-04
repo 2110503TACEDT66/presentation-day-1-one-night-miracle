@@ -83,7 +83,7 @@ exports.createRental=async (req,res,next)=>{
 
     //if the user is not an admin, they can only create 3 rental.
     if(existedRental.length >= 3 && req.user.role !== 'admin'){
-        return res.status(400).json({success:false,message:`Ther user with ID ${req.user.id}has already made 3 rental`});
+        return res.status(400).json({success:false,message:`Ther user with ID ${req.user.id} has already made 3 rental`});
     }
     
     const rental= await Rental.create(req.body);
