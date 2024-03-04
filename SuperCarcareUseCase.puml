@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+left to right direction
+
+skinparam actorStyle awesome
+
+scale 1080 width
+
+:Customer:
+:Admin:
+:Company:
+:Car Dealer:
+
+rectangle "SuperCarcare"{
+(Provides car)
+(Manage cars)
+(Manages company profile)
+(View available cars)
+(Manages SuperCarcare website)
+(Register/Login)
+(Register/Login)
+(View available cars)
+(Rent cars)
+(Payment)
+}
+
+"Car Dealer" -up-> (Provides car)
+"Company" -up-> (Manage cars)
+"Company" -up-> (Manages company profile)
+(Provides car) .> (Manage cars) : <<includes>>
+(Manage cars) .> (View available cars) : <<includes>>
+"Admin" -up-> (Manages SuperCarcare website)
+"Customer" -down-> (Register/Login)
+"Admin" -up-> (Register/Login)
+"Customer" -down-> (View available cars)
+"Customer" -down-> (Rent cars)
+(Rent cars) .> (Payment) : <<includes>>
+(Register/Login) .> (Payment) : <<includes>>
+(Register/Login) .> (Rent cars) : <<includes>>
+(Register/Login) .> (View available cars) : <<includes>>
+@enduml
