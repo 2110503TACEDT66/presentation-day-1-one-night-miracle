@@ -1,0 +1,23 @@
+@startuml Rental(POST)
+
+header SuperCarcare Rental Diagram
+footer Page %page% of %lastpage%
+title "Working Rental (POST)"
+
+participant "Client" as client
+participant "<<javaScript>>\n:server" as server
+participant "<<router>>\n:rentals" as routerRentals
+participant "<<controllers>>\n:rentals" as controllersRentals
+participant "<<model>>\n:Rental" as modelRentals
+database "<<MongoDB>>\n:rentals" as RentalsDatabase
+
+client->server ++:req.post('/rentals')
+server->routerRentals ++:app.use('/rentals',rentals)
+routerRentals -> controllersRentals ++:createRental()
+controllersRentals->modelRentals ++:create(req.body)
+modelRentals ->RentalsDatabase ++: RentalSchema
+RentalsDatabase --> modelRentals --: rental
+controllersRentals <-- modelRentals --:rental
+controllersRentals->client --:response
+
+@enduml
