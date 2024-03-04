@@ -4,7 +4,7 @@ const User = require('../models/User');
 const { default: mongoose } = require('mongoose');
 
 //@desc Get all rentals
-//@route GET /api/v1/rentals
+//@route GET /api/v1/rental
 //@access public
 exports.getRentals=async(req,res,next)=>{
     let query;
@@ -42,7 +42,7 @@ exports.getRentals=async(req,res,next)=>{
 };
 
 //@desc Get single rental
-//@route GET /api/v1/rentals/:id
+//@route GET /api/v1/rental/:id
 //@access Public
 exports.getRental=async(req,res,next)=>{
     try{
