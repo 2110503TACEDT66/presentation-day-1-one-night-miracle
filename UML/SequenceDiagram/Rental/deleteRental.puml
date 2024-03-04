@@ -1,4 +1,4 @@
-@startuml Rental(PUT)
+@startuml Rental(Delete)
 
 header SuperCarcare Rental Diagram
 footer Page %page% of %lastpage%
