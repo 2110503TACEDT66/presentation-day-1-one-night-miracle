@@ -159,6 +159,7 @@ exports.deleteRental=async (req,res,next)=>{
 //@access Private
 exports.payRentals = async (req,res,next) => {
     try{
+        if(req.user.role !== "user") return res.status(400).json({success:false, message:"Admin cannot use payRentals to prevent accidents, please use payRental instead"});
         const ObjectId = mongoose.Types.ObjectId;
 
         const price = await Rental.aggregate([{
@@ -214,6 +215,7 @@ exports.payRental = async (req,res,next) => {
         const ObjectId = mongoose.Types.ObjectId;
 
         const rental = await Rental.findById(req.params.id);
+        if(rental.user !== req.user.id && req.user.role !== "admin") return res.status(400).json({success:false, message:"You cannot pay someone else's rental"});
         if(rental.isPaid) return res.status(400).json({success:false,messege:"You've already paid this rental"});
 
         const balance = req.user.balance - 0;
