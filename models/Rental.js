@@ -2,7 +2,11 @@ const mongoose=require('mongoose');
 
 const RentalSchema=new mongoose.Schema({//เพิ่มตัวแปร isPaid เป็น true or false
 
-    rentalDate:{
+    pickupDate:{
+        type:Date,
+        required:true
+    },
+    returnDate:{
         type:Date,
         required:true
     },
