@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 
 const CarSchema = new mongoose.Schema({
@@ -28,6 +27,10 @@ const CarSchema = new mongoose.Schema({
     gearsystem: {
         type: String,
         required: [true,'Please add a gearsystem'],
+    },
+    picture: {
+        type: String,
+        required: [true, 'Please add picture path']
     }
    }, {
     toJSON:{virtuals:true},
