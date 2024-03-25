@@ -81,9 +81,15 @@ exports.createRental=async (req,res,next)=>{
     //Check for existed rental
     const existedRental = await Rental.find({user:req.user.id});
 
-    //if the user is not an admin, they can only create 3 rental.
+    const rentalWithThisCar = await Rental.findOne({car:req.params.carId});
+
+    if(rentalWithThisCar){
+        return res.status(400).json({success:false,messege:`You've already had a rental of this car`});
+    }
+
+    //if the user is not an admin, they can only create 3 rentals.
     if(existedRental.length >= 3 && req.user.role !== 'admin'){
-        return res.status(400).json({success:false,message:`Ther user with ID ${req.user.id} has already made 3 rental`});
+        return res.status(400).json({success:false,message:`The user with ID ${req.user.id} has already made 3 rentals`});
     }
     
     const rental= await Rental.create(req.body);
