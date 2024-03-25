@@ -39,6 +39,12 @@ const sendTokenResponse=(user,statusCode,res)=>{
     }
     res.status(statusCode).cookie('token',token,options).json({
         success:true,
+        _id:user.id,
+        name:user.name,
+        telephoneNumber:user.telephoneNumber,
+        email:user.email,
+        role:user.role,
+        balance:user.balance,
         token
     })
 }
