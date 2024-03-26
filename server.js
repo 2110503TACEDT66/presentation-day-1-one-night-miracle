@@ -14,6 +14,7 @@ connectDB();
 const cars = require('./routes/cars');
 const rental=require('./routes/rental');
 const auth =require('./routes/auth');
+const providers = require('./routes/providers')
 
 
 
@@ -30,6 +31,7 @@ app.use(cors());
 app.use('/api/v1/cars', cars);
 app.use('/api/v1/auth',auth);
 app.use('/api/v1/rental',rental);
+app.use('/api/v1/providers',providers);
 
 
 const PORT = process.env.PORT || 3000;
