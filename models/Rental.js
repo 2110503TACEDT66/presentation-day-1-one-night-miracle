@@ -20,6 +20,10 @@ const RentalSchema=new mongoose.Schema({//เพิ่มตัวแปร isPa
         ref:'Car',
         required:true
     },
+    provider:{
+        type:String,
+        required:true
+    },
     isPaid:{
         type: Boolean,
         default: false
